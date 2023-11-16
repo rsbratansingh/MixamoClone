@@ -1,0 +1,107 @@
+<div class="container p-0 m-0">
+    <div class="row">
+        <div class="col-auto my-2" *ngIf="searchKeyword">
+            <button *ngFor="let search of searchKeyword;index as i" class="btn btn-sm btn-success cancleBtn me-1"
+                (click)="removeSearch(i)"><b>X </b>{{ search}}
+            </button>
+        </div>
+    </div>
+    <div class="row top_section">
+        <div class="col-3 p-0">
+            <h4 class="title">Animations List</h4>
+        </div>
+        <div class="col-9 p-0">
+            <form>
+                <div class="row">
+                    <div class="col-5">
+                    </div>
+                    <div class="col-3">
+                        <select class="form-select form-select-sm justify-content-end align-items-end"
+                            style="cursor: pointer;" aria-label=".form-select-sm example"
+                            (click)="onPageListChange($event)">
+                            <option value="20" selected>20 per page</option>
+                            <option value="30">30 per page</option>
+                            <option value="40">40 per page</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-check form-switch form-inline d-flex align-items-center">
+                            <input [(ngModel)]="animationService.bothCharacters"
+                                (click)="animationService.handelToggleButton()" name="bothAnimations" checked
+                                type="checkbox" role="switch" id="bothAnimations" class="form-check-input"
+                                style="cursor: pointer;">
+                            <label for="bothAnimations" class="form-check-label pl-12"
+                                style="cursor: pointer;"><strong>Both
+                                    Animations</strong></label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="!animationService.bothCharacters"
+        class="d-flex flex-wrap flex-row overflow-auto p-0 row animations_list ">
+        <div class="col-sm-4 col-md-3 animation_box p-0" *ngFor="let file of files | paginate:{
+            itemsPerPage:tableSize,
+            currentPage:page,
+            totalItems:count}">
+            <div class="card shadow w-95" (click)="sendToPreview(file)">
+                <img src="{{file.img}}" alt="{{file.name}}" class="animations_featuredimg">
+                <h6 class="animations-title pb-1 mb-1">
+                    {{file.name}}
+                </h6>
+                <div class="card-content">
+                    <h6 class="card-title pb-1 mb-1">
+                        {{file.name}}
+                    </h6>
+                    <p class="tags">tags:{{file.tags}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="justify-content-center align-items-center" style="justify-content: center!important;"
+            *ngIf="!files.length">
+            <div class="card m-3 bg-light">
+                <div class="card-body text-center">
+                    There are no results matching your query. Please try another search...
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-2">
+            <pagination-controls previousLabel="Previous" nextLabel="Next" (pageChange)="onPageChange($event)">
+            </pagination-controls>
+        </div>
+    </div>
+
+    <div *ngIf="animationService.bothCharacters"
+        class="d-flex flex-wrap flex-row overflow-auto p-0 row animations_list ">
+        <div class="col-sm-4 col-md-3 animation_box p-0" *ngFor="let file of bothAnimationFiles| paginate:{
+            itemsPerPage:tableSize,
+            currentPage:page,
+            totalItems:count}">
+            <div class="card shadow w-95" (click)="getBothAnimationFiles(file)">
+                <img src="{{file.img}}" alt="{{file.name}}" class="animations_featuredimg">
+                <h6 class="animations-title pb-1 mb-1">
+                    {{file.name}}
+                </h6>
+                <div class="card-content">
+                    <h6 class="card-title pb-1 mb-1">
+                        {{file.name}}
+                    </h6>
+                    <p class="tags">tags:{{file.tags}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="justify-content-center align-items-center" style="justify-content: center!important;"
+            *ngIf="!bothAnimationFiles.length">
+            <div class="card m-3 bg-light">
+                <div class="card-body text-center">
+                    There are no results matching your query. Please try another search...
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <pagination-controls previousLabel="Previous" nextLabel="Next" (pageChange)="onPageChange($event)">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

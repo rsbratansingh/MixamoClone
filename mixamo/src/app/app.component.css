@@ -1,0 +1,212 @@
+.checkbox-box {
+    position: absolute;
+    top: 15%;
+    padding:5px;
+    right:10px;
+    cursor:pointer;
+    z-index: 1000;
+    width: 300px;
+    max-height: 350px;
+    background-color: #fff;
+    border: 1px solid #bdbcbc;
+    border-radius: 4px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-check-input{
+    border:1px solid #636262 !important;
+  }
+/* @media(max-width:768px) { */
+    .column-container {
+        height: 95vh !important;
+        overflow-y: auto !important;
+    }
+/* } */
+
+.preview {
+    position: relative;
+}
+
+.preview img {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    top: 5px;
+    right: 5px;
+}
+
+.nav-item a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.nav-item.active a {
+    border-bottom: 4px solid rgb(75, 223, 216);
+}
+
+.navbar {
+    background-image: linear-gradient(to right, #6849f0, #4fd8f0);
+}
+
+.navbar-brand {
+    
+    color: white;
+    font-size: 1.1em;
+}
+
+.nav-link {
+    color: white !important;
+    font-size: 1em;
+}
+
+.nav-link:hover {
+    color: #24f1a2 !important;
+}
+.downloadColor{
+    background: #684cf0;
+    border-radius: 6px;
+    width: 40px;
+}
+.playColor{
+    background-color:#682D63;
+    border-radius: 40px;
+}
+.resetColor{
+    background-color:rgb(79 213 240); ;
+    border-radius: 40px;
+}
+.pauseColor{
+    background-color: #373E40;
+    border-radius: 40px;
+}
+.download {
+    color:#535353;
+    cursor: pointer !important;
+    color: white;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.search {
+    color: white;
+    background: #6849f0;
+    font-size: 1em;
+}
+
+:root {
+    --clr-neon: hsl(317, 100%, 54%);
+}
+
+input {
+    border: none !important;
+    color: #4fd8f0;
+}
+.w-100{width: 100%;}
+.button_section{
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 0px 10px;
+}
+.position_relative{
+    position: relative;
+}
+.like_icon{
+    width: 35px;
+    height: 35px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+    border-radius: 4px;
+    padding: 3px;
+}
+.btn-primary{
+    border-color: transparent;
+    background-color: transparent;
+    position: relative;
+}
+.btn-primary img{
+    position: absolute;
+}
+.borderleft{
+    border-left: 2px solid rgb(87, 87, 87);
+}
+.topBar{
+    position: absolute;
+    top:0;
+    height:30px;
+    padding-top:5px;
+    width: 40%;
+    color:white;
+    background-color: rgb(143, 143, 143);
+    text-align: center;
+    align-items: center;
+}
+.topBar:hover .playlistSection{
+    display:block;
+}
+.playlistSection{
+display: none;
+background-color: rgb(170, 168, 168);
+border-bottom: 1px solid #383838b5;
+}
+.playlistName{
+    color:white;
+    display: inline-block;
+    margin-right: 10px;
+}
+.addBtn{
+    margin-top:2px;
+    display: inline-block;
+}
+.bottomBar{
+    position: absolute;
+    bottom: 0;
+    /* margin-top:auto; */
+    height:40px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+    align-items: center;
+}
+.favourite_button{
+    position:absolute;
+    padding:0;
+    margin:0;
+}
+#rangeValue{
+    cursor: pointer;
+}
+.rangeColor{
+color: #000000;
+}
+.container-fluid{
+    overflow: hidden !important;
+    }
+
+.download_button{
+    position: absolute;
+    right: 2px;
+    top: 50px;
+}   
+.play_btn, .pause_btn{
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+    border: 0;
+} 
+.play_btn img,.pause_btn img{
+    width: 18px !important;
+    height: auto;
+}
+.pr-10{
+    padding-right: 10px;
+}
+.form-range {
+    width: 100%;
+    height: 1.5rem;
+    padding: 0px 0px 0px 10px !important;
+}
