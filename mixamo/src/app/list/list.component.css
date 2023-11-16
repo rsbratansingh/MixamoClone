@@ -1,0 +1,56 @@
+.submit_button{
+    color: white;
+    background: #6849f0;
+    font-size: 1em;
+    margin-right: 15px;
+}
+.uploadNew_button{
+    color: white;
+    background: #51D1F0;
+    font-size: 1em;
+}
+.search_button{
+    font-size: 14px;
+    padding: 0px 10px;
+    line-height: normal;
+    height: 31px;
+}
+.top_section{    
+    padding: 30px 0px;
+}
+.title{
+    font-weight: 500;
+    margin: 0;
+}
+.mr-15{
+    margin-right: 15px;
+}
+.animations_list{
+    height: 75vh;
+    overflow: auto;
+}
+.form_section{
+    height: 75vh;
+    overflow: auto;
+}
+.merge_button{
+    color: white;
+    background: #682D62;
+    font-size: 1em;
+}
+.sort{
+    width: 100%;
+    border: solid 1px #e5e5e5;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+.sort:focus-visible {
+    outline: #6747EF auto 1px;
+}
+.ml-10{
+    margin-left:10px;
+}
+input[type="checkbox" i]{
+    width: 18px;
+    background-color: red;
+}

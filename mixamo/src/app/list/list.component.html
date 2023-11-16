@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="row top_section">
+        <div class="col-4">
+            <h4 class="title">Animations List</h4>
+        </div>
+        <div class="col-3 d-flex justify-content-end align-items-center">
+            <div class="d-flex justify-content-end">
+                <input type="checkbox" id="selectall" [(ngModel)]="toggleBothAnimation" name="select" value="selectall">
+                <label for="selectall" class="ml-10"> Both Animations</label><br>
+            </div>
+        </div>
+        <div class="col-1">
+        </div>
+        <div class="col-4">
+            <div class="d-flex align-items-end justify-content-end">
+                <button type="button" class="btn btn-primary search_button"(click)="addData()">Add Files to DB</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-7">
+            <div class="animations_list" *ngIf="!toggleBothAnimation">
+                                <mat-selection-list  color="primary" #files [(ngModel)]="bothFiles">
+                    <mat-list-option #fileoption *ngFor="let file of fileList" [value]="file"
+                        [disabled]="files.selectedOptions.selected.length>1 && !fileoption.selected"
+                        (click)="onCheckboxChanged(files)">{{file.name}}</mat-list-option>
+                </mat-selection-list>
+            </div>
+            <div class="animations_list" *ngIf="toggleBothAnimation">
+                <mat-selection-list color="primary" #files [(ngModel)]="bothFiles">
+                    <mat-list-option #fileoption *ngFor="let file of bothCharacterFiles" [value]="file"
+                        [disabled]="files.selectedOptions.selected.length>0 && !fileoption.selected"
+                        (click)="onCheckboxChanged(files)">{{file.name}}</mat-list-option>
+                </mat-selection-list>
+            </div>
+        </div>
+        <div class="col-5 form_section">
+            <form [formGroup]="selectedFileForm">
+                <div class="mb-3">
+                    <label for="fileTitle" class="form-label">Title</label>
+                    <input type="name" class="form-control" id="fileTitle" formControlName="name"
+                        placeholder="Enter Title Here">
+                    <div
+                        *ngIf="selectedFileForm.get('name').hasError('required') && selectedFileForm.get('name').touched">
+                        <small class="ms-4" style="color: red;"><strong class="me-1">Title is required.</strong></small>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="fileTags" class="form-label">Tags</label>
+                    <input type="tags" class="form-control" id="fileTags" formControlName="tags"
+                        placeholder="Enter Tags Here">
+                    <div
+                        *ngIf="selectedFileForm.get('tags').hasError('required')&& selectedFileForm.get('tags').touched">
+                        <small class="ms-4" style="color: red;"><strong class="me-1">Tags are required.</strong></small>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="formImage" class="form-label">Upload Image</label>
+                    <input type="file" class="form-control" formControlName="img" id="image" placeholder="Enter Path"(input)="selectImage($event)">
+                    <div *ngIf="selectedFileForm.get('img').hasError('invalidFormat')"(input)="selectImage($event)">
+                        <small class="ms-4" style="color: red;"><strong class="me-1">Invalid file
+                                format.</strong>Please
+                            select an image file (e.g., jpg, jpeg, png, gif,svg).</small>
+                    </div>
+                    <img [src]="selectedFile?.img" alt="Image" width="120px;" height="120px">
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Upload Files</label>
+                    <input class="form-control" type="file" formControlName="src" id="formFile"(input)="selectFile($event)">
+                    <div
+                        *ngIf="selectedFileForm.get('src').hasError('invalidFormat')&& selectedFileForm.get('src').touched">
+                        <small class="ms-4" style="color: red;"><strong class="me-1">Invalid file
+                                format.</strong>Please
+                            select an animation file (e.g., fbx, glb, dae, iAvtar, iprop, obj, gltf).</small>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div *ngIf="bothFiles.length==2">
+                        <button class="btn me-2 merge_button" (click)="mergeFiles()">Merge
+                            Files</button>
+                    </div>
+                    <div *ngIf="bothFiles.length==1||!bothFiles.length">
+                        <button class="btn submit_button me-2"[disabled]="!selectedFileForm.get('name').valid || selectedFileForm.invalid"
+                         (click)="onSubmit()">Submit</button>
+                    </div>
+                    <div>
+                        <button class="btn uploadNew_button me-2"[disabled]="selectedFileForm.invalid || isSrcControlEmpty()"(click)="uploadFile()">Upload New File</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

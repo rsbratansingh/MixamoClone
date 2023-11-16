@@ -1,0 +1,145 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="#">IClone</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-center">
+                <li class="nav-item" [ngClass]="{'active':isActive('/list')}">
+                    <a class="nav-link" routerLink="/list" routerLinkActive="active">Admin</a>
+                </li>
+                <li class="nav-item" [ngClass]="{'active':isActive('/animations')}">
+                    <a class="nav-link" routerLink="/animations" routerLinkActive="active">Animation</a>
+                </li>
+                <li class="nav-item" [ngClass]="{'active':isActive('/playlist')}">
+                    <a class="nav-link" aria-current="page" routerLink="/playlist"
+                        routerLinkActive="active">Playlist</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search"
+                    name="keyword" [(ngModel)]="keyword" autocomplete="off" (focus)="showCheckboxBox=true"
+                    (click)="onSearch()" (blur)="hideCheckbox()">
+                <span class="bi bi-search"></span>
+                <button class="btn search" type="submit" (click)="search(keyword)">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="checkbox-box" *ngIf="showCheckboxBox" (mouseenter)="onCheckboxEnter()" (mouseleave)="onCheckboxLeave()">
+    <b style="text-transform:uppercase">Animation Genere</b>
+    <div class="form-check" *ngFor="let checkbox of checkboxes">
+        <input class="form-check-input" [(ngModel)]="checkbox.checked" [checked]="checkbox.checked"
+            id="{{checkbox.label}}" type="checkbox" (change)="onCheckboxChange($event)">
+        <label class="form-check-label" style="cursor: pointer;" for="{{checkbox.label}}">{{ checkbox.label }}</label>
+    </div>
+</div>
+<div class="container-fluid p-0">
+    <div class="row w-100 mx-auto">
+        <div class="col-sm-6" [ngClass]="showContainer?'col-md-8 col-sm-12':'col-md-12 col-sm-12'">
+            <div class="">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 m-0 p-0 position_relative" [ngClass]="{'d-none':showContainer==false}">
+            <div class="preview" [ngStyle]="{'cursor':animationService.isSelectedFile ? 'pointer' : ''}">
+                    <img *ngIf="animationService.selectedFile?.markFavourite; else unFavourite"
+                        src="../assets/Images/like-fill.svg" (click)="toggleFavourite()" alt="Mark as Favourite"
+                        class="like_icon">
+                    <ng-template #unFavourite>
+                        <img src="../assets/Images/like.svg" (click)="toggleFavourite()" alt="Mark as Favourite"
+                            class="like_icon">
+                    </ng-template>
+            </div>
+            <div class="download_button">
+                <button type="button" [disabled]="!animationService.isSelectedFile" class="btn download downloadColor"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="createDownloadDropdown()">
+                    <img src="../assets/download-solid.svg" alt="download">
+                </button>
+            </div>
+            <div class="topBar">Playlist
+                <div class="playlistSection" *ngFor="let list of playlist;index as i">
+                    <p class="playlistName" id="name">{{list.name}}</p>
+                    <button class="btn btn-sm btn-success addBtn"
+                        (click)="addSelectedFile(list._id,list.name,i)"><b>✔</b></button>
+                </div>
+            </div>
+            <div class="p-0" #container style="width:100%; height: 89vh;"></div>
+            <div class="d-flex row p-0 m-0 button_section bottomBar">
+                <div class="col-2">
+                    <button [disabled]="!animationService.isSelectedFile" *ngIf="!animationService.animationPaused"
+                        class="btn play_btn" (click)="pauseAnimation()"><img src="../assets/play-solid.svg"
+                            alt="pause"></button>
+                    <button [disabled]="!animationService.isSelectedFile" *ngIf="animationService.animationPaused"
+                        class="btn pause_btn" (click)="playAnimation()"><img src="../assets/pause-solid.svg"
+                            alt="play"></button>
+                </div>
+                <div class="col-10">
+                    <form class="d-flex align-items-center">
+                        <label for="rangeValue"
+                            class="pr-3">{{animationService.currentAnimationDuration}}/{{animationService.totalAnimationDuration}}</label>
+                        <input [disabled]="!animationService.selectedFile" id="rangeValue" name="rangeValue"
+                            type="range" (ngModelChange)="onRangeChange($event)" min="0"
+                            [max]="animationService.totalAnimationDuration" [(ngModel)]="rangeValue"
+                            [value]="animationService.currentAnimationDuration" step="1"
+                            class="form-range rangeColor" />
+                    </form>
+                </div>
+            </div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Download Settings</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="Format">Format</label>
+                                    <select class="form-select" [(ngModel)]="selectedFormat" id="Format">
+                                        <option value="All">All
+                                        </option>
+                                        <option value=".fbx" *ngIf="extensions?.includes('.fbx')">FBX Binary (.fbx)
+                                        </option>
+                                        <option value=".glb" *ngIf="extensions?.includes('.glb')">GLB/GLTF (.glb)
+                                        </option>
+                                        <option value=".dae" *ngIf="extensions?.includes('.dae')">DAE</option>
+                                        <option value=".obj" *ngIf="extensions?.includes('.obj')">Obj</option>
+                                        <option value=".iprop" *ngIf="extensions?.includes('.iprop')">iprop</option>
+                                        <option value=".iAvtar" *ngIf="extensions?.includes('.iAvtar')">IAvtar (.iAvtar)
+                                        </option>
+                                        <option value=".rlMotion" *ngIf="extensions?.includes('.rlMotion')">rlMotion
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="Animation">Animation</label>
+                                    <select class="form-select" id="Animation" [(ngModel)]="selectedAnimation">
+                                        <option value="0" selected>First Animation</option>
+                                        <option value="1"
+                                            [disabled]="!animationService.selectedFile?.isBothCharacterFile">Second
+                                            Animation
+                                        </option>
+                                        <option value="2"
+                                            [disabled]="!animationService.selectedFile?.isBothCharacterFile">Both
+                                            Animations</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                style="text-transform: uppercase;">cancle</button>
+                            <button type="button" class="btn btn-success"
+                                (click)="downloadFile(selectedFormat,selectedAnimation)"
+                                style="text-transform: uppercase;">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

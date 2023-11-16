@@ -1,0 +1,110 @@
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-6">
+            <div id="playlistNav" class="mb-1 mt-2">
+                <p (click)="isSelectedPlaylist=false" style="cursor: pointer;" class="inlineParagraph"><b>All
+                        Playlist</b></p>
+                <p *ngIf="isSelectedPlaylist" style="cursor: pointer;" class="inlineParagraph"
+                    (click)="selectedPlaylist=true;">
+                    Selected List: {{selectedPlaylistName}} <span *ngIf="currentPlaylistFile"><b>> </b>
+                        <span *ngIf="isBothCharacters">Both Characters <b>></b></span><span
+                            *ngIf="!isBothCharacters">Files
+                            <b>></b></span>
+                        {{currentPlaylistFile}}</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-6 text-end">
+            <button *ngIf="!isSelectedPlaylist" class="btn btn-primary btn-block create-playlist mb-2"
+                (click)="isFavourite=!isFavourite">Create
+                Playlist</button>
+            <form class="m-2 me-2 d-flex align-items-start" *ngIf="isFavourite">
+                <input type="text" class="form-control" #nameInput name="playlistName" [(ngModel)]="playlistName">
+                <button class="btn btn-success add ms-1" type="submit"
+                    (click)=onSubmit(playlistName,selectedFile)>Save</button>
+            </form>
+        </div>
+        <div *ngIf="!isSelectedPlaylist else elseBlock" class="row flex-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" width="20%">No.</th>
+                        <th scope="col" width="50%%">Name</th>
+                        <th scope="col">Controls</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let list of playlist;index as i">
+                    <tr (click)="showPlaylist($event,list,list._id,i)">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{list.name}}</td>
+                        <td>
+                            <button id="add" class="btn me-1 add" type="button"
+                                (click)="addSelectedFile(list._id,list.name)">Add</button>
+                            <button id="edit" class="btn me-1 edit" [disabled]="list.name==='Favourites'" type="button"
+                                (click)="rename(i,list._id,list.name)">Rename</button>
+                            <button id="delete" class="btn remove" type="button" [disabled]="list.name==='Favourites'"
+                                (click)="deletePlaylist(list._id,i)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ng-template #elseBlock>
+            <div
+                *ngIf="isSelectedPlaylist && selectedList[0].files.length!=0 || selectedList[0].BothCharacters.length!==0; else noFiles">
+                <div class="d-flex flex-wrap flex-row overflow-auto p-0 row animations_list">
+                    <div class="col-sm-4 col-md-3 animation_box p-0" *ngFor="let file of selectedList[0].files| paginate:{
+                        itemsPerPage:tableSize,
+                        currentPage:page,
+                        totalItems:count};index as i ">
+                        <div class="card shadow m-1" (click)="sendToPreview($event,file)">
+                            <img src="{{file.img}}" alt="{{file.name}}" class="animations_featuredimg">
+                            <h6 class="animations-title pb-1 mb-1">
+                                {{file.name}}
+                            </h6>
+                            <div class="card-content">
+                                <h6 class="card-title pb-1 mb-1">
+                                    {{file.name}}
+                                </h6>
+                                <p class="tags">tags:{{file.tags}}</p>
+                            </div>
+                            <button id="delete" class="btn btn-primary remove" type="button"
+                                (click)="deleteSelectedListItem(i,selectedList[0],file,'files')">Remove</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3 animation_box p-0" *ngFor="let file of selectedList[0].BothCharacters| paginate:{
+                        itemsPerPage:tableSize,
+                        currentPage:page,
+                        totalItems:count};index as i">
+                        <div class="card shadow m-1" (click)="sendToPreview($event,file)">
+                            <img src="{{file.img}}" alt="{{file.name}}" class="animations_featuredimg">
+                            <h6 class="animations-title pb-1 mb-1">
+                                {{file.name}}
+                            </h6>
+                            <div class="card-content">
+                                <h6 class="card-title pb-1 mb-1">
+                                    {{file.name}}
+                                </h6>
+                                <p class="tags">tags:{{file.tags}}</p>
+                            </div>
+                            <button id="delete" class="btn btn-primary remove" type="button"
+                                (click)="deleteSelectedListItem(i,selectedList[0],file,'BothCharacters')">Remove</button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center mt-2">
+                        <pagination-controls previousLabel="Previous" nextLabel="Next"
+                            (pageChange)="onPageChange($event)">
+                        </pagination-controls>
+                    </div>
+                </div>
+            </div>
+            <ng-template #noFiles>
+                <p>Playlist is Empty!</p>
+                <button class="btn btn-danger remove me-3 mb-2" type="button"
+                    [disabled]="selectedList[0].name==='Favourites'"
+                    (click)="deletePlaylist(selectedList[0]._id)">Delete
+                    List</button>
+                <button class="btn btn-primary edit" type="button" (click)="isSelectedPlaylist=false">Back</button>
+            </ng-template>
+        </ng-template>
+    </div>
